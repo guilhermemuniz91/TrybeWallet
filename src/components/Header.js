@@ -3,21 +3,18 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 class Header extends Component {
-  expensesSum = () => {
-    const { expenses } = this.props;
+  totalExpenses = (expenses) => {
+    // const { expenses } = this.props;
     let sum = 0;
-
-    expenses.forEach((oneExpense) => {
-      const { value, currency, exchangeRates } = oneExpense;
-      sum += value * exchangeRates[currency].ask;
+    expenses.forEach(({ value, currency, exchangeRates }) => {
+      const { ask } = exchangeRates[currency];
+      sum += value * ask;
     });
-
-    return parseFloat(sum).toFixed(2);
+    return sum.toFixed(2);
   };
 
   render() {
-    const { email } = this.props;
-    const totalExpenses = this.expensesSum();
+    const { email, expenses } = this.props;
     return (
       <header>
 
@@ -27,8 +24,7 @@ class Header extends Component {
         </h3>
 
         <p data-testid="total-field">
-          {totalExpenses
-            ? `Total de despesas: ${totalExpenses} BRL` : 'Total de despesas: 0'}
+          { this.totalExpenses(expenses) }
         </p>
 
         <p data-testid="header-currency-field">BRL</p>
