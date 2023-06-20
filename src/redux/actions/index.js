@@ -44,3 +44,9 @@ export const addExpenses = (expenses) => ({
     exchangeRates: expenses.exchangeRates,
   },
 });
+
+export const DELETE_EXPENSE = 'DELETE_EXPENSE';
+
+export const deleteExpense = (payload) => (
+  { type: DELETE_EXPENSE, payload }
+);
