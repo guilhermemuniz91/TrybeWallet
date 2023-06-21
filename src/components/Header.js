@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 
 class Header extends Component {
   totalExpenses = (expenses) => {
-    // const { expenses } = this.props;
     let sum = 0;
     expenses.forEach(({ value, currency, exchangeRates }) => {
       const { ask } = exchangeRates[currency];

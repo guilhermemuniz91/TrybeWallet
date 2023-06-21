@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { FETCH_CURRENCIES,
   currenciesApiResponse,
   addExpenses,
+  updateExpenses,
   currenciesQuotation } from '../redux/actions';
 
 class WalletForm extends Component {
@@ -58,10 +59,15 @@ class WalletForm extends Component {
     });
   };
 
+  updateEditExpense = () => {
+    const { dispatch } = this.props;
+    dispatch(updateExpenses(this.state));
+    this.setState({ value: '', description: '' });
+  };
+
   render() {
     const { value, description, currency, method, tag } = this.state;
-    const { currencies,
-    } = this.props;
+    const { currencies, editor } = this.props;
 
     return (
       <main>
@@ -143,14 +149,14 @@ class WalletForm extends Component {
             </select>
           </label>
 
-        </form>
+          <button
+            type="button"
+            onClick={ editor ? this.updateEditExpense : this.handleClick }
+          >
+            { editor ? 'Editar despesa' : 'Adicionar despesa' }
+          </button>
 
-        <button
-          type="button"
-          onClick={ this.handleClick }
-        >
-          Adicionar despesa
-        </button>
+        </form>
 
       </main>
     );
@@ -160,11 +166,14 @@ class WalletForm extends Component {
 const mapStateToProps = (state) => ({
   currencies: state.wallet.currencies,
   exchangeRates: state.wallet.exchangeRates,
+  editor: state.wallet.editor,
+  idToEdit: state.wallet.idToEdit,
 });
 
 WalletForm.propTypes = {
   dispatch: PropTypes.func.isRequired,
   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
+  editor: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps)(WalletForm);
